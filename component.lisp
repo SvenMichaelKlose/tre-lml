@@ -22,6 +22,8 @@
     props
     state)
 
+(defmethod lml-component component-will-mount ())
+(defmethod lml-component component-did-mount ())
 (defmethod lml-component component-should-update? () t)
 (defmethod lml-component component-will-update ())
 (defmethod lml-component render ())
@@ -40,6 +42,10 @@
   (push this *pending-component-updates*)
   (wait #'update-lml-components 0))
 
+(defmethod lml-component _unschedule-update ()
+  (= *pending-component-updates* (remove this *pending-component-updates* :test #'eq))
+  (wait #'update-lml-components 0))
+
 (defmethod lml-component set-state (x)
   (@ (n (property-names x))
     (= (aref state n) (aref x n)))
@@ -52,6 +58,7 @@
   state)
 
 (defmethod lml-component init ()
+  (_unschedule-update)
   (= element (render)))
 
 (defmethod lml-component close ()
