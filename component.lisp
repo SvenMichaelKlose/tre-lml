@@ -17,12 +17,14 @@
 (defclass lml-component (init-props)
   (= props init-props)
   (= state (new))
+  (= _force-update? nil)
   this)
 
 (defmember lml-component
     element
     props
-    state)
+    state
+    _force-update?)
 
 (defmethod lml-component component-will-mount ())
 (defmethod lml-component component-did-mount ())
@@ -34,15 +36,13 @@
   (= element (? element.parent-node
                 (element.replace-by (render))
                 (render))))
-;  (element.update (render)))
 
 (defmethod lml-component _schedule-update ()
   (push this *pending-component-updates*)
   (wait #'update-lml-components 0))
 
 (defmethod lml-component _unschedule-update ()
-  (= *pending-component-updates* (remove this *pending-component-updates* :test #'eq))
-  (wait #'update-lml-components 0))
+  (= *pending-component-updates* (remove this *pending-component-updates* :test #'eq)))
 
 (defmethod lml-component force-update ()
   (= _force-update? t)
@@ -60,7 +60,6 @@
   state)
 
 (defmethod lml-component init ()
-  (_unschedule-update)
   (= element (render)))
 
 (defmethod lml-component close ()
