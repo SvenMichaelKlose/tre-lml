@@ -8,7 +8,9 @@
             (= *pending-component-updates* (unique *pending-component-updates*))
             (pop *pending-component-updates*))
           nil
-    (when (!.component-should-update?)
+    (when (| !._force-update?
+             (!.component-should-update?))
+      (= !._force-update? nil)
       (!.component-will-update)
       (!._rerender))))
 
@@ -34,10 +36,6 @@
                 (render))))
 ;  (element.update (render)))
 
-(defmethod lml-component force-update ()
-  (component-will-update)
-  (_rerender))
-
 (defmethod lml-component _schedule-update ()
   (push this *pending-component-updates*)
   (wait #'update-lml-components 0))
@@ -45,6 +43,10 @@
 (defmethod lml-component _unschedule-update ()
   (= *pending-component-updates* (remove this *pending-component-updates* :test #'eq))
   (wait #'update-lml-components 0))
+
+(defmethod lml-component force-update ()
+  (= _force-update? t)
+  (_schedule-update))
 
 (defmethod lml-component set-state (x)
   (@ (n (property-names x))
