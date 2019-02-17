@@ -62,7 +62,7 @@
   this)
 
 (defmethod autoform-panel render-label (name)
-  (!? (aref (aref props.schema name) "descr")
+  (!? (aref (aref props.schema name) "title")
       (aref ! (downcase (symbol-name *language*)))))
 
 (defmethod autoform-panel render ()
