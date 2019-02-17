@@ -16,11 +16,7 @@ reconciliation.
 LML macro expansion (including some to add event listeners) +
 LML component expansion.
 
-## autoform.lisp
+## autoform.lisp, autoform-widgets.lisp
 
 Automatic form generation based on data descriptions and widget
 set.
-
-## widget.lisp
-
-Default widgets for some data types.
