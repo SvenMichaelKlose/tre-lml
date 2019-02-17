@@ -26,7 +26,7 @@
                        :key ,name
                        ,@(!? schema.size `(:size ,!))
                        ,@(!? schema.pattern `(:pattern ,!))
-                       ,@(!? schema.is_required `(:required "yes"))
+                       ,@(!? schema.required? `(:required "yes"))
                        :on-change ,[comp.onchange name (_.element).value]
                        :value ,x))
              (make-autoform-widget (comp props schema name x) [& _.is_editable
@@ -35,14 +35,14 @@
                        :key ,name
                        ,@(!? schema.size `(:size ,!))
                        ,@(!? schema.pattern `(:pattern ,!))
-                       ,@(!? schema.is_required `(:required "yes"))
+                       ,@(!? schema.required? `(:required "yes"))
                        :on-change ,[comp.onchange name (_.element).value]
                        :value ,x))
              (make-autoform-widget (comp props schema name x) [& _.is_editable
                                                                  (equal _.type "text")]
                `(textarea :key ,name
                           ,@(!? schema.pattern `(:pattern ,!))
-                          ,@(!? schema.is_required `(:required "yes"))
+                          ,@(!? schema.required? `(:required "yes"))
                           :on-change ,[comp.onchange name (_.element).value]
                   ,x))
              (make-autoform-widget (comp props schema name x) [equal _.type "text"]
