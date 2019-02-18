@@ -4,11 +4,9 @@
   this)
 
 (defmethod autoform onchange (k v)
-  (let ndata (add-properties state k v)
-    (!? props.onchange
-        (funcall ! ndata)
-        (print "onchange missing"))))
-;        (set-state ndata))))
+  (!? props.onchange
+      (funcall ! (add-properties state k v))
+      (print "onchange missing")))
 
 (defmethod autoform _printed-value (name)
   (let v (aref state name)
