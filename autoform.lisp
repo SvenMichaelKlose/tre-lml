@@ -31,17 +31,6 @@
 (declare-lml-component autoform)
 
 
-(defclass (autoform-field autoform) (init-props)
-  (super init-props)
-  this)
-
-(defmethod autoform-field render ()
-  ($$ (_render-field props.field)))
-
-(finalize-class autoform-field)
-(declare-lml-component autoform-field)
-
-
 (defclass (autoform-list autoform) (init-props)
   (super init-props)
   this)
