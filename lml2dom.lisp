@@ -1,12 +1,6 @@
 ,{(var *have-lml-components?* nil)
   nil}
 
-(fn lml2dom-exec-function (x)
-  (let f .x.
-    (? (function? f)
-       f
-       (symbol-function f))))
-
 (fn lml2dom-element (x doc)
   (make-extended-element (downcase (string x.)) :doc doc))
 
@@ -23,6 +17,12 @@
 (fn lml2dom-body (parent x doc)
   (@ (i x)
     (lml2dom i :doc doc :parent parent)))
+
+(fn lml2dom-exec-function (x)
+  (let f .x.
+    (? (function? f)
+       f
+       (symbol-function f))))
 
 (fn lml2dom-attr-exec (elm name x)
   (? (%exec? x)
