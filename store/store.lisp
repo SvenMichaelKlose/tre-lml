@@ -11,6 +11,9 @@
 (defmethod store write (new-data)
   (= data (merge-properties data new-data)))
 
+(defmethod store replace (new-data)
+  (= data (copy-properties new-data)))
+
 (defmethod store empty ()
   (= data nil))
 
