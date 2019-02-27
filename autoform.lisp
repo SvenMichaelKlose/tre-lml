@@ -8,27 +8,37 @@
       (funcall ! (add-properties state k v))
       (print "onchange missing")))
 
-(defmethod autoform _printed-value (name)
+(defmethod autoform _printed-value (schema-item name)
   (let v (aref state name)
-    (| (!? (aref props.schema name).printer
+    (| (!? schema-item.printer
            (funcall ! v)
            v)
        "")))
 
-(defmethod autoform _render-typed-field (name)
+(defmethod autoform _render-typed-field (schema-item name)
   (@ (i props.widgets)
-    (!= (aref props.schema name)
-      (& (funcall i.predicate !)
-         (return (funcall i.maker this props ! name (_printed-value name)))))))
+    (& (funcall i.predicate schema-item)
+       (return (funcall i.maker this props schema-item name (_printed-value schema-item name))))))
 
-(defmethod autoform _render-field (x)
+(defmethod autoform _render-field (schema-item x)
   (?
     (function? x)   (funcall x state)
-    (string? x)     (_render-typed-field x)
+    (string? x)     (_render-typed-field schema-item x)
     x))
 
 (finalize-class autoform)
 (declare-lml-component autoform)
+
+
+(defclass (autoform-field autoform) (init-props)
+  (super init-props)
+  this)
+
+(defmethod autoform-field render ()
+  (_render-field props.schema props.name))
+
+(finalize-class autoform-field)
+(declare-lml-component autoform-field)
 
 
 (defclass (autoform-list autoform) (init-props)
@@ -37,7 +47,7 @@
 
 (defmethod autoform-list render ()
   ($$ `(tr ,@(@ [`(td ,@(& (string? _) `(:key ,_))
-                    ,(_render-field _))]
+                    ,(_render-field (aref props.schema _) _))]
                 props.fields))))
 
 (finalize-class autoform-list)
@@ -59,7 +69,7 @@
                     ,(? (string? _)
                         (render-label _)))
                   (td ,@(& (string? _) `(:key ,_))
-                    ,(_render-field _)))]
+                    ,(_render-field (aref props.schema _) _)))]
               props.fields))))
 
 (finalize-class autoform-panel)
