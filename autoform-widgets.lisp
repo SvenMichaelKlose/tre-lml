@@ -47,6 +47,16 @@
           :value ,x))
 
 (def-autoform-widget (comp props schema name x) [& _.editable?
+                                                    (eql _.type "email")]
+  `(input :type "email"
+          :key ,name
+          ,@(!? schema.size `(:size ,!))
+          ,@(!? schema.pattern `(:pattern ,!))
+          ,@(!? schema.required? `(:required "yes"))
+          :on-change ,[comp.onchange name (_.element).value]
+          :value ,x))
+
+(def-autoform-widget (comp props schema name x) [& _.editable?
                                                     (eql _.type "text")]
   `(textarea :key ,name
              ,@(!? schema.pattern `(:pattern ,!))
