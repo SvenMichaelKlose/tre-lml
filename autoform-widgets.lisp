@@ -14,7 +14,7 @@
                                         :maker     #'(,args ,@body)}))))
 
 (def-autoform-widget (comp props schema name x) [& _.editable?
-                                                   (equal _.type "selection")]
+                                                   (eql _.type "selection")]
   `(select :key ,name
            :on-change ,[comp.onchange name (form-select-get-selected-option-value (_.element))]
      ,@(@ [with (ov   (aref props.data _)
@@ -26,7 +26,7 @@
           (property-names schema.options))))
 
 (def-autoform-widget (comp props schema name x) [& _.editable?
-                                                    (equal _.type "string")]
+                                                    (eql _.type "string")]
   `(input :type "text"
           :key ,name
           ,@(!? schema.size `(:size ,!))
@@ -36,7 +36,7 @@
           :value ,x))
 
 (def-autoform-widget (comp props schema name x) [& _.editable?
-                                                    (equal _.type "password")]
+                                                    (eql _.type "password")]
   `(input :type "password"
           :key ,name
           ,@(!? schema.size `(:size ,!))
@@ -46,7 +46,7 @@
           :value ,x))
 
 (def-autoform-widget (comp props schema name x) [& _.editable?
-                                                    (equal _.type "text")]
+                                                    (eql _.type "text")]
   `(textarea :key ,name
              ,@(!? schema.pattern `(:pattern ,!))
              ,@(!? schema.required? `(:required "yes"))
