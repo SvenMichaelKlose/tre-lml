@@ -20,6 +20,7 @@
      ,@(@ [with (ov   (aref props.data _)
                  txt  (aref schema.options _))
             `(option :value ,_
+                     ,@(!? schema.required? `(:required "yes"))
                      ,@(? (eql _ x)
                           `(:selected "yes"))
                ,txt)]
