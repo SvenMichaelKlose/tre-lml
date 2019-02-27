@@ -17,11 +17,13 @@
                                                    (equal _.type "selection")]
   `(select :key ,name
            :on-change ,[comp.onchange name (form-select-get-selected-option-value (_.element))]
-     ,@(@ [`(option :value ,_.name
-                    ,@(when (equal (aref props.data name) _.name)
-                        `(:selected "yes"))
-                    ,(aref _.descr "en"))]
-          schema.selection)))
+     ,@(@ [with (ov   (aref props.data _)
+                 txt  (aref schema.options _))
+            `(option :value ,_
+                     ,@(? (eql _ x)
+                          `(:selected "yes"))
+               ,txt)]
+          (property-names schema.options))))
 
 (def-autoform-widget (comp props schema name x) [& _.editable?
                                                     (equal _.type "string")]
