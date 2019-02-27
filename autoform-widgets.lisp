@@ -51,7 +51,6 @@
   `(input :type "email"
           :key ,name
           ,@(!? schema.size `(:size ,!))
-          ,@(!? schema.pattern `(:pattern ,!))
           ,@(!? schema.required? `(:required "yes"))
           :on-change ,[comp.onchange name (_.element).value]
           :value ,x))
