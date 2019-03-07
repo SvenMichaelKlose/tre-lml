@@ -1,11 +1,3 @@
-(fn price-string (x)
-  (!= (number x)
-    (+ (string (integer !))
-       (lang en "."
-             de ",")
-       (!= (string (* ! 100))
-         (subseq ! (- (length !) 2))))))
-
 (var *autoform-widgets* nil)
 
 (defmacro def-autoform-widget (args predicate &body body)
