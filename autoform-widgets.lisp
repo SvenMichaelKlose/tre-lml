@@ -2,8 +2,8 @@
 
 (defmacro def-autoform-widget (args predicate &body body)
   `(= *autoform-widgets* (append *autoform-widgets*
-                                 (list {:predicate ,predicate
-                                        :maker     #'(,args ,@body)}))))
+                                 (list {:predicate  ,predicate
+                                        :maker      #'(,args ,@body)}))))
 
 (def-autoform-widget (store name schema v) [& _.is_editable
                                               (eql _.type "selection")]
@@ -25,7 +25,7 @@
           ,@(!? schema.size `(:size ,!))
           ,@(!? schema.pattern `(:pattern ,!))
           ,@(!? schema.is_required `(:required "yes"))
-          :on-change ,[store.write (_.element).value]
+          :on-change ,[store.write (make-object name (_.element).value)]
           :value ,v))
 
 (def-autoform-widget (store name schema v) [& _.is_editable
@@ -35,7 +35,7 @@
           ,@(!? schema.size `(:size ,!))
           ,@(!? schema.pattern `(:pattern ,!))
           ,@(!? schema.is_required `(:required "yes"))
-          :on-change ,[store.write (_.element).value]
+          :on-change ,[store.write (make-object name (_.element).value)]
           :value ,v))
 
 (def-autoform-widget (store name schema v) [& _.is_editable
@@ -44,7 +44,7 @@
           :key ,name
           ,@(!? schema.size `(:size ,!))
           ,@(!? schema.is_required `(:required "yes"))
-          :on-change ,[store.write (_.element).value]
+          :on-change ,[store.write (make-object name (_.element).value)]
           :value ,v))
 
 (def-autoform-widget (store name schema v) [& _.is_editable
@@ -52,7 +52,7 @@
   `(textarea :key ,name
              ,@(!? schema.pattern `(:pattern ,!))
              ,@(!? schema.is_required `(:required "yes"))
-             :on-change ,[store.write (_.element).value]
+             :on-change ,[store.write (make-object name (_.element).value)]
      ,v))
 
 (def-autoform-widget (store name schema v) [equal _.type "text"]
