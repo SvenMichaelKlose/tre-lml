@@ -1,4 +1,4 @@
-(defclass store (&optional (init-data (new)))
+(defclass store (&optional (init-data {}))
   (= data init-data)
   this)
 
