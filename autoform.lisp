@@ -12,15 +12,15 @@
 
 (defmethod autoform-field _value ()
   (let v (props.store.value props.field)
-    (| (!? props.schema.printer
+    (| (!? props.schema-item.printer
            (funcall ! v)
            v)
        "")))
 
 (defmethod autoform-field _render-typed-field ()
   (@ (widget props.widgets)
-    (& (funcall widget.predicate props.schema)
-       (return (funcall widget.maker props.store props.name props.schema (_value))))))
+    (& (funcall widget.predicate props.schema-item)
+       (return (funcall widget.maker props.store props.name props.schema-item (_value))))))
 
 (defmethod autoform-field render ()
   ($$ (!= props.field
@@ -40,9 +40,9 @@
 (defmethod autoform-list render ()
   ($$ `(tr ,@(@ [`(td ,@(& (string? _)
                            `(:key ,_))
-                    (autoform-field :schema  ,(aref props.schema _)
-                                    :field   ,_
-                                    :store   ,props.store))]
+                    (autoform-field :schema-item  ,(aref props.schema _)
+                                    :field        ,_
+                                    :store        ,props.store))]
                 props.fields))))
 
 (finalize-class autoform-list)
@@ -65,9 +65,9 @@
                         (_render-label _)))
                   (td ,@(& (string? _)
                            `(:key ,_))
-                    (autoform-field :schema  ,(aref props.schema _)
-                                    :field   ,_
-                                    :store   ,props.store)))]
+                    (autoform-field :schema-item  ,(aref props.schema _)
+                                    :field        ,_
+                                    :store        ,props.store)))]
               props.fields))))
 
 (finalize-class autoform-panel)
