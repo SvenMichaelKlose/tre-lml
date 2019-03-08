@@ -20,7 +20,7 @@
 (defmethod autoform-field _render-typed-field ()
   (@ (widget props.widgets)
     (& (funcall widget.predicate props.schema-item)
-       (return (funcall widget.maker props.store props.name props.schema-item (_value))))))
+       (return (funcall widget.maker props.store props.field props.schema-item (_value))))))
 
 (defmethod autoform-field render ()
   ($$ (!= props.field
