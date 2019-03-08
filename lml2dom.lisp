@@ -19,16 +19,19 @@
     (lml2dom i :doc doc :parent parent)))
 
 (fn lml2dom-exec-function (x)
-  (let f .x.
-    (? (function? f)
-       f
-       (symbol-function f))))
+  (!= .x.
+    (? (function? !)
+       !
+       (symbol-function !))))
 
 (fn lml2dom-attr-exec (elm name x)
-  (? (%exec? x)
-     (aprog1 ...x.
-       (funcall (lml2dom-exec-function x) name (lml2dom-exec-param x) elm !))
-     x))
+  (?
+    (%exec? x)
+      (aprog1 ...x.
+        (funcall (lml2dom-exec-function x) name (lml2dom-exec-param x) elm !))
+    (keyword? x)
+      (list-string (camel-notation (string-list (symbol-name x))))
+    x))
 
 (fn lml2dom-attr (elm x doc)
   (let name (lml-attr-string x.)
@@ -59,7 +62,10 @@
                      f  [& _
                            (? (lml-attr? _)
                               (progn
-                                (=-%aref ._. attrs (lml-attr-string _.))
+                                (=-%aref (? (keyword? ._.)
+                                            (list-string (camel-notation (string-list (symbol-name ._.))))
+                                            ._.)
+                                         attrs (lml-attr-string _.))
                                 (f .._))
                               (= children (@ [lml2dom _ :doc doc] _)))])
                 (f .x)
