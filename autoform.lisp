@@ -7,13 +7,12 @@
 
 
 (defclass (autoform-field autoform) (init-props)
-  (invoke-debugger)
   (super init-props)
   this)
 
 (defmethod autoform-field _value ()
   (let v (props.store.value props.field)
-    (| (!? props.schema-item.printer
+    (| (!? props.schema.printer
            (funcall ! v)
            v)
        "")))
@@ -21,12 +20,12 @@
 (defmethod autoform-field _render-typed-field ()
   (@ (widget props.widgets)
     (& (funcall widget.predicate props.schema)
-       (return (funcall widget.maker props.store props.name props.schema-item (_value))))))
+       (return (funcall widget.maker props.store props.name props.schema (_value))))))
 
 (defmethod autoform-field render ()
   ($$ (!= props.field
         (?
-          (function? !)  (funcall ! state)
+          (function? !)  (funcall ! props.store.data)
           (string? !)    (_render-typed-field)
           !))))
 
@@ -41,9 +40,9 @@
 (defmethod autoform-list render ()
   ($$ `(tr ,@(@ [`(td ,@(& (string? _)
                            `(:key ,_))
-                    (autoform-field :schema-item  ,(aref props.schema _)
-                                    :field        ,_
-                                    :store        ,props.store))]
+                    (autoform-field :schema  ,(aref props.schema _)
+                                    :field   ,_
+                                    :store   ,props.store))]
                 props.fields))))
 
 (finalize-class autoform-list)
