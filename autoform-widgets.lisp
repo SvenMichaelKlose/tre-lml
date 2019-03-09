@@ -8,7 +8,7 @@
 (def-autoform-widget (store name schema v) [& _.is_editable
                                               (eql _.type "selection")]
   `(select :key ,name
-           :on-change ,[store.write (form-select-get-selected-option-value (_.element))]
+           :on-change ,[store.write (make-object name (form-select-get-selected-option-value (_.element)))]
      ,@(@ [with (ov   (aref store.data _)
                  txt  (aref schema.options _))
             `(option :value ,_
