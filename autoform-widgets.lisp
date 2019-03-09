@@ -7,49 +7,38 @@
 
 (def-autoform-widget (store name schema v) [& _.is_editable
                                               (eql _.type "selection")]
-  `(select :key ,name
-           :on-change ,[store.write (make-object name (form-select-get-selected-option-value (_.element)))]
+  `(select :key        ,name
+           :on-change  ,[store.write (make-object name (form-select-get-selected-option-value (_.element)))]
      ,@(@ [`(option :value ,_
                     ,@(!? schema.is_required `(:required "yes"))
                     ,@(? (eql _ v) `(:selected "yes"))
               ,(aref schema.options _))]
           (property-names schema.options))))
 
-(def-autoform-widget (store name schema v) [& _.is_editable
-                                              (eql _.type "string")]
-  `(input :type "text"
-          :key ,name
+(fn autoform-pattern-required (schema)
+  `(,@(!? schema.pattern      `(:pattern ,!))
+    ,@(!? schema.is_required  `(:required "yes"))))
+
+(fn make-autoform-input-element (typ store name schema v)
+  `(input :type  ,typ
+          :key   ,name
           ,@(!? schema.size `(:size ,!))
-          ,@(!? schema.pattern `(:pattern ,!))
-          ,@(!? schema.is_required `(:required "yes"))
-          :on-change ,[store.write (make-object name (_.element).value)]
-          :value ,v))
+          ,@(autoform-pattern-required schema)
+          :on-change  ,[store.write (make-object name (_.element).value)]
+          :value      ,v))
 
 (def-autoform-widget (store name schema v) [& _.is_editable
-                                              (eql _.type "password")]
-  `(input :type "password"
-          :key ,name
-          ,@(!? schema.size `(:size ,!))
-          ,@(!? schema.pattern `(:pattern ,!))
-          ,@(!? schema.is_required `(:required "yes"))
-          :on-change ,[store.write (make-object name (_.element).value)]
-          :value ,v))
-
-(def-autoform-widget (store name schema v) [& _.is_editable
-                                              (eql _.type "email")]
-  `(input :type "email"
-          :key ,name
-          ,@(!? schema.size `(:size ,!))
-          ,@(!? schema.is_required `(:required "yes"))
-          :on-change ,[store.write (make-object name (_.element).value)]
-          :value ,v))
+                                              (in? _.type "string" "password" "email")]
+  (make-autoform-input-element (? (eql schema.type "string")
+                                  "text"
+                                  schema.type)
+                               store name schema v))
 
 (def-autoform-widget (store name schema v) [& _.is_editable
                                               (eql _.type "text")]
-  `(textarea :key ,name
-             ,@(!? schema.pattern `(:pattern ,!))
-             ,@(!? schema.is_required `(:required "yes"))
-             :on-change ,[store.write (make-object name (_.element).value)]
+  `(textarea :key  ,name
+             ,@(autoform-pattern-required schema)
+             :on-change  ,[store.write (make-object name (_.element).value)]
      ,v))
 
 (def-autoform-widget (store name schema v) [equal _.type "text"]
