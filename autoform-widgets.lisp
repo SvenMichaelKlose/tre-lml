@@ -9,13 +9,10 @@
                                               (eql _.type "selection")]
   `(select :key ,name
            :on-change ,[store.write (make-object name (form-select-get-selected-option-value (_.element)))]
-     ,@(@ [with (ov   (aref store.data _)
-                 txt  (aref schema.options _))
-            `(option :value ,_
-                     ,@(!? schema.is_required `(:required "yes"))
-                     ,@(? (eql _ v)
-                          `(:selected "yes"))
-               ,txt)]
+     ,@(@ [`(option :value ,_
+                    ,@(!? schema.is_required `(:required "yes"))
+                    ,@(? (eql _ v) `(:selected "yes"))
+              ,(aref schema.options _))]
           (property-names schema.options))))
 
 (def-autoform-widget (store name schema v) [& _.is_editable
