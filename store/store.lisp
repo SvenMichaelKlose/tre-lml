@@ -1,9 +1,11 @@
 (defclass store (&optional (init-data (new)))
   (= data init-data)
+  (= _children (new))
   this)
 
 (defmember store
     data
+    _children
     _component)
 
 (defmethod store _update-component ()
@@ -27,9 +29,8 @@
   (aref data name))
 
 (defmethod store child (name)
-  ; TODO: Reuse child.
-  (new child-store :name    name
-                   :parent  this))
+  (| (aref _children name)
+     (= (aref _children name) (new child-store :name name :parent this))))
 
 (defmethod store write (new-data)
   (_store-write new-data))
