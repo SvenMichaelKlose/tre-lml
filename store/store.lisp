@@ -6,16 +6,19 @@
     data
     _component)
 
-(defmethod store connect (comp)
-  (= _component comp))
+(defmethod store _update-component ()
+  (!? _component
+      (!.force-update)))
 
-(defmethod store child (name_)
-  ; TODO: Reuse child.
-  (new child-store :name    name_
-                   :parent  this))
+(defmethod store _store-write (new-data)
+  (prog1 (= data (merge-properties data new-data))
+    (_update-component)))
 
 (defmethod store names ()
   (property-names data))
+
+(defmethod store connect (comp)
+  (= _component comp))
 
 (defmethod store fetch ()
   data)
@@ -23,13 +26,10 @@
 (defmethod store value (name)
   (aref data name))
 
-(defmethod store _store-write (new-data)
-  (prog1 (= data (merge-properties data new-data))
-    (_update-component)))
-
-(defmethod store _update-component ()
-  (!? _component
-      (!.force-update)))
+(defmethod store child (name)
+  ; TODO: Reuse child.
+  (new child-store :name    name
+                   :parent  this))
 
 (defmethod store write (new-data)
   (_store-write new-data))
