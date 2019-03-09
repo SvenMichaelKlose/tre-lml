@@ -11,7 +11,9 @@
            :on-change  ,[store.write (make-object name (form-select-get-selected-option-value (_.element)))]
      ,@(@ [`(option :value ,_
                     ,@(!? schema.is_required `(:required "yes"))
-                    ,@(? (eql _ v) `(:selected "yes"))
+                    ,@(? (| (eql _ v)
+                            (eql _ schema.default))
+                         `(:selected "yes"))
               ,(aref schema.options _))]
           (property-names schema.options))))
 
@@ -25,7 +27,7 @@
           ,@(!? schema.size `(:size ,!))
           ,@(autoform-pattern-required schema)
           :on-change  ,[store.write (make-object name (_.element).value)]
-          :value      ,v))
+          :value      ,(| v schema-default)))
 
 (def-autoform-widget (store name schema v) [& _.is_editable
                                               (in? _.type "string" "password" "email")]
@@ -39,13 +41,13 @@
   `(textarea :key  ,name
              ,@(autoform-pattern-required schema)
              :on-change  ,[store.write (make-object name (_.element).value)]
-     ,v))
+     ,(| v schema.default)))
 
 (def-autoform-widget (store name schema v) [equal _.type "text"]
-  `(pre ,v))
+  `(pre ,(| v schema.default)))
 
 (def-autoform-widget (store name schema v) [identity t]
-  v)
+  (| v schema.default))
 
 (fn make-fields-editable (schema &rest fields)
   (@ (i (| fields (property-names schema)) schema)
