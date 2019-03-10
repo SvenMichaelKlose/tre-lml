@@ -1,13 +1,13 @@
 (defclass (session-store store) (name)
   (super nil)
   (= _session name)
-  (fetch)
+  (_fetch)
   this)
 
 (defmember session-store
     _session)
 
-(defmethod session-store fetch ()
+(defmethod session-store _fetch ()
   (= data (| (read-json-session _session)
              (new))))
 

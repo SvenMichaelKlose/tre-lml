@@ -3,7 +3,7 @@
   (= _element element)
   (= _fields fields)
   (= _prefix prefix)
-  (fetch)
+  (_fetch)
   this)
 
 (defmember attribute-store
@@ -14,7 +14,7 @@
 (defmethod attribute-store _attribute-name (x)
   (string-concat (!? _prefix ! "") x))
 
-(defmethod attribute-store fetch ()
+(defmethod attribute-store _fetch ()
   (@ (i _fields)
     (= (aref data i) (_element.read-attribute (_attribute-name i))))
   data)

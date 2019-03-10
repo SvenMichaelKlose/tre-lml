@@ -22,9 +22,6 @@
 (defmethod store connect (comp)
   (= _component comp))
 
-(defmethod store fetch ()
-  data)
-
 (defmethod store value (name)
   (aref data name))
 
