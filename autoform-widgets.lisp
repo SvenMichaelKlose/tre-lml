@@ -27,7 +27,7 @@
           ,@(!? schema.size `(:size ,!))
           ,@(autoform-pattern-required schema)
           :on-change  ,[store.write (make-object name (_.element).value)]
-          :value      ,(| v schema-default)))
+          :value      ,(| v schema.default)))
 
 (def-autoform-widget (store name schema v) [& _.is_editable
                                               (in? _.type "string" "password" "email")]
