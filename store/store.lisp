@@ -45,7 +45,8 @@
 
 (defmethod store set-schema-defaults (schema)
   (@ (i (property-names schema))
-    (!? (aref schema i).default
+    (!? (& (not (aref data i))
+           (aref schema i).default)
         (= (aref data i) !))))
 
 (finalize-class store)
