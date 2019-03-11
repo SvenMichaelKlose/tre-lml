@@ -49,6 +49,9 @@
 (def-autoform-widget (store name schema v) [identity t]
   (| v schema.default))
 
-(fn make-schema-editable (schema &rest fields)
+(fn set-schema-items (value what schema &rest fields)
   (@ (i (| fields (property-names schema)) schema)
-    (= (aref schema i).is_editable t)))
+    (= (aref (aref schema i) what) value)))
+
+(fn make-schema-editable (schema &rest fields)
+  (apply #'set-schema-items t "is_editable" schema fields))
