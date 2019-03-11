@@ -8,7 +8,7 @@
 (def-autoform-widget (store name schema v) [& _.is_editable
                                               (eql _.type "selection")]
   `(select :key        ,name
-           :on-change  ,[store.write (make-object name (form-select-get-selected-option-value (_.element)))]
+           :on-change  ,[store.write (make-object name ((_.element).get ":checked").value)]
      ,@(@ [`(option :value ,_
                     ,@(!? schema.is_required `(:required "yes"))
                     ,@(? (| (eql _ v)
