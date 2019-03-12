@@ -38,11 +38,11 @@
 
 (def-autoform-widget (store name schema v) [& _.is_editable
                                               (eql _.type "boolean")]
-  `(input :type       "checkbox"
-          :key        ,name
-          :on-change  ,[store.write (make-object name (_.element).checked)]
+  `(input :type      "checkbox"
+          :key       ,name
+          :on-click  ,[store.write (make-object name (not v))]
           ,@(& (| v schema.default)
-               '(:checked "checked"))))
+               '(:checked "1"))))
 
 (def-autoform-widget (store name schema v) [& _.is_editable
                                               (eql _.type "text")]
@@ -51,7 +51,7 @@
              :on-change  ,[store.write (make-object name (_.element).value)]
      ,(| v schema.default)))
 
-(def-autoform-widget (store name schema v) [equal _.type "text"]
+(def-autoform-widget (store name schema v) [eql _.type "text"]
   `(pre ,(| v schema.default)))
 
 (def-autoform-widget (store name schema v) [identity t]
