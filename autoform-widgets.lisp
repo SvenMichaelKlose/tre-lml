@@ -37,6 +37,14 @@
                                store name schema v))
 
 (def-autoform-widget (store name schema v) [& _.is_editable
+                                              (eql _.type "boolean")]
+  `(input :type       "checkbox"
+          :key        ,name
+          :on-change  ,[store.write (make-object name (_.element).checked)]
+          ,@(& (| v schema.default)
+               '(:checked "checked"))))
+
+(def-autoform-widget (store name schema v) [& _.is_editable
                                               (eql _.type "text")]
   `(textarea :key  ,name
              ,@(autoform-pattern-required schema)
