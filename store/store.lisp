@@ -33,7 +33,7 @@
   (_store-write new-data))
 
 (defmethod store replace (new-data)
-  (prog1 (= data (copy-properties new-data))
+  (prog1 (= data (copy-props new-data))
     (_update-component)))
 
 (defmethod store empty ()
@@ -53,7 +53,7 @@
 
 
 (defclass (child-store store) (&key name parent)
-  (super (copy-properties (aref parent.data name)))
+  (super (copy-props (aref parent.data name)))
   (= _name name
      _parent parent)
   this)
@@ -70,7 +70,7 @@
     (_update-parent)))
 
 (defmethod child-store replace (new-data)
-  (prog1 (= data (copy-properties new-data))
+  (prog1 (= data (copy-props new-data))
     (_update-parent)))
 
 (defmethod child-store empty ()
