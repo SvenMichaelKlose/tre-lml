@@ -13,7 +13,7 @@
       (!.force-update)))
 
 (defmethod store _store-write (new-data)
-  (prog1 (= data (merge-properties data new-data))
+  (prog1 (= data (merge-props data new-data))
     (_update-component)))
 
 (defmethod store names ()

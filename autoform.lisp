@@ -1,5 +1,5 @@
 (defclass (autoform lml-component) (init-props)
-  (super (merge-properties {:widgets *autoform-widgets*} init-props))
+  (super (merge-props {:widgets *autoform-widgets*} init-props))
   this)
 
 (finalize-class autoform)
