@@ -27,7 +27,7 @@
           ,@(!? schema.size `(:size ,!))
           ,@(autoform-pattern-required schema)
           :on-change  ,[store.write (make-object name (_.element).value)]
-          :value      ,(| v schema.default)))
+          :value      ,(| v schema.default "")))
 
 (def-autoform-widget (store name schema v) [& _.is_editable
                                               (in? _.type "string" "password" "email")]
@@ -49,13 +49,13 @@
   `(textarea :key  ,name
              ,@(autoform-pattern-required schema)
              :on-change  ,[store.write (make-object name (_.element).value)]
-     ,(| v schema.default)))
+     ,(| v schema.default "")))
 
 (def-autoform-widget (store name schema v) [eql _.type "text"]
-  `(pre ,(| v schema.default)))
+  `(pre ,(| v schema.default "")))
 
 (def-autoform-widget (store name schema v) [identity t]
-  (| v schema.default))
+  (| v schema.default ""))
 
 (fn set-schema-items (value what schema &rest fields)
   (@ (i (| fields (property-names schema)) schema)

@@ -12,10 +12,9 @@
 
 (defmethod autoform-field _value ()
   (let v (props.store.value props.field)
-    (| (!? props.schema-item.printer
-           (funcall ! v)
-           v)
-       "")))
+    (!? props.schema-item.printer
+        (funcall ! v)
+        v)))
 
 (defmethod autoform-field _render-typed-field ()
   (@ (widget props.widgets)
