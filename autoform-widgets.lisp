@@ -54,6 +54,9 @@
 (def-autoform-widget (store name schema v) [eql _.type "text"]
   `(pre ,(| v schema.default "")))
 
+(def-autoform-widget (store name schema v) [eql _.type "selection"]
+  (aref schema.options v))
+
 (def-autoform-widget (store name schema v) [identity t]
   (| v schema.default ""))
 
