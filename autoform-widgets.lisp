@@ -9,8 +9,8 @@
                                               (eql _.type "selection")]
   `(select :key        ,name
            :on-change  ,[store.write (make-object name ((_.element).get ":checked").value)]
+           ,@(!? schema.is_required `(:required "yes"))
      ,@(@ [`(option :value ,_
-                    ,@(!? schema.is_required `(:required "yes"))
                     ,@(? (| (eql _ v)
                             (eql _ schema.default))
                          `(:selected "yes"))
