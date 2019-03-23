@@ -54,7 +54,9 @@
 
 (defmethod autoform-panel _render-label (name)
   (!? (aref (aref props.schema name) "title")
-      (aref ! (downcase (symbol-name *language*)))))
+      (? (object? !)
+         (aref ! (downcase (symbol-name *language*)))
+         !)))
 
 (defmethod autoform-panel render ()
   ($$ `(div
