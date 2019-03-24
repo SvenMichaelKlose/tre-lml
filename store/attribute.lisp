@@ -15,9 +15,9 @@
   (string-concat (!? _prefix ! "") x))
 
 (defmethod attribute-store _fetch ()
-  (@ (i _fields)
-    (= (aref data i) (_element.read-attribute (_attribute-name i))))
-  data)
+  (@ (i _fields data)
+    (& (_element.has-attribute? (_attribute-name i))
+       (= (aref data i) (_element.read-attribute (_attribute-name i))))))
 
 (defmethod attribute-store commit ()
   (@ (i _fields)
