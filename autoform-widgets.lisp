@@ -47,7 +47,8 @@
                                               (eql _.type "boolean")]
   (let av (? (defined? (slot-value store.data name))
              v
-             (autoform-value schema v))
+             (!= (autoform-value schema v)
+               (store.write (make-object name !))))
     `(input :type      "checkbox"
             :key       ,name
             :on-click  ,[store.write (make-object name (_.element).checked)]
