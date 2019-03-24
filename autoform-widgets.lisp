@@ -45,13 +45,13 @@
 
 (def-autoform-widget (store name schema v) [& _.is_editable
                                               (eql _.type "boolean")]
-  (let has-value-in-record? (defined? (slot-value store.data name))
+  (let av (? (defined? (slot-value store.data name))
+             v
+             (autoform-value schema v))
     `(input :type      "checkbox"
             :key       ,name
-            :on-click  ,[store.write (make-object name (not v))]
-            ,@(& has-value-in-record?
-                 (not (empty-string? (autoform-value schema v)))
-                 '(:checked "1")))))
+            :on-click  ,[store.write (make-object name (_.element).checked)]
+            ,@(& av '(:checked "1")))))
 
 (def-autoform-widget (store name schema v) [& _.is_editable
                                               (eql _.type "text")]
