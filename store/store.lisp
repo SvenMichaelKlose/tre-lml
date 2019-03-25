@@ -1,6 +1,6 @@
-(defclass store (&optional init-data)
-  (= data (| init-data (new)))  ; TODO: &optional (init-data (new)) doesn't work.
-  (= _children (new))
+(defclass store (&optional (init-data (new)))
+  (= data init-data
+     _children (new))
   this)
 
 (defmember store
