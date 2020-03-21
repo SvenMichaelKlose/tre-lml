@@ -2,6 +2,9 @@
   (super (merge-props {:widgets *autoform-widgets*} init-props))
   this)
 
+(defmethod autoform render ()
+  (error "Class AUTOFORM cannot be used alone. Use derived classes like AUTOFORM-PANEL."))
+
 (finalize-class autoform)
 (declare-lml-component autoform)
 
