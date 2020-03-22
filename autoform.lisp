@@ -5,6 +5,9 @@
 (defmethod autoform render ()
   (error "Class AUTOFORM cannot be used alone. Use derived classes like AUTOFORM-PANEL."))
 
+(defmethod autoform field-class-name (x)
+  (+ "field-" _))
+
 (finalize-class autoform)
 (declare-lml-component autoform)
 
@@ -40,8 +43,7 @@
   this)
 
 (defmethod autoform-list render ()
-  ($$ `(tr ,@(@ [`(td ,@(& (string? _)
-                           `(:key ,_))
+  ($$ `(tr ,@(@ [`(td ,@(& (string? _) `(:class ,(field-class-name _)))
                     (autoform-field :schema-item  ,(aref props.schema _)
                                     :field        ,_
                                     :store        ,props.store))]
@@ -62,16 +64,14 @@
          !)))
 
 (defmethod autoform-panel render ()
-  ($$ `(div
-         ,@(@ [`(tr
-                  (td
+  ($$ `(div :class "autoform autoform-panel"
+         ,@(@ [`(label ,@(& (string? _) `(:class ,(field-class-name _)))
+                  (span
                     ,(? (string? _)
                         (_render-label _)))
-                  (td ,@(& (string? _)
-                           `(:key ,_))
-                    (autoform-field :schema-item  ,(aref props.schema _)
-                                    :field        ,_
-                                    :store        ,props.store)))]
+                  (autoform-field :schema-item  ,(aref props.schema _)
+                                  :field        ,_
+                                  :store        ,props.store))]
               props.fields))))
 
 (finalize-class autoform-panel)
