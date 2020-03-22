@@ -6,7 +6,7 @@
   (error "Class AUTOFORM cannot be used alone. Use derived classes like AUTOFORM-PANEL."))
 
 (defmethod autoform field-class-name (x)
-  (+ "field-" _))
+  (+ "field-" x))
 
 (finalize-class autoform)
 (declare-lml-component autoform)
