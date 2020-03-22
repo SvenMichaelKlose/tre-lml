@@ -3,12 +3,12 @@
 (fn dom2lml-attributes (x)
   (mapcan [unless (eql "style" _)
             `(,(make-keyword (upcase _.)) ,._)]
-          (properties-alist x)))
+          x))
 
 (fn dom2lml-element (x)
   (unless (eql (symbol-name nil) x.tag-name)
     `(,(make-symbol (upcase x.tag-name))
-      ,@(!? (x.read-attributes)
+      ,@(!? (x.attributes-alist)
             (dom2lml-attributes !))
       ,@(!? (x.child-list)
             (dom2lml-children !)))))
