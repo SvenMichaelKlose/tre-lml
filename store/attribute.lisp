@@ -16,7 +16,7 @@
 
 (defmethod attribute-store _fetch ()
   (@ (i _fields data)
-    (& (_element.has-attribute? (_attribute-name i))
+    (& (_element.attr? (_attribute-name i))
        (= (aref data i) (_element.attr (_attribute-name i))))))
 
 (defmethod attribute-store commit ()
