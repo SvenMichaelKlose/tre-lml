@@ -9,7 +9,7 @@
                                               (eql _.type "selection")]
   (with (has-default?  (defined? schema.default)
          av            (autoform-value schema v))
-    `(select :key        ,name
+    `(select :name       ,name
              :on-change  ,[store.write (make-object name ((_.element).get ":checked").value)]
              ,@(!? schema.is_required `(:required "yes"))
        ,@(@ [`(option :value ,_
@@ -30,7 +30,7 @@
 
 (fn make-autoform-input-element (typ store name schema v)
   `(input :type  ,typ
-          :key   ,name
+          :name  ,name
           ,@(!? schema.size `(:size ,!))
           ,@(autoform-pattern-required schema)
           :on-change  ,[store.write (make-object name (_.element).value)]
@@ -50,13 +50,13 @@
              (!= (autoform-value schema v)
                (store.write (make-object name !))))
     `(input :type      "checkbox"
-            :key       ,name
+            :name      ,name
             :on-click  ,[store.write (make-object name (_.element).checked)]
             ,@(& av '(:checked "1")))))
 
 (def-autoform-widget (store name schema v) [& _.is_editable
                                               (eql _.type "text")]
-  `(textarea :key  ,name
+  `(textarea :name  ,name
              ,@(autoform-pattern-required schema)
              :on-change  ,[store.write (make-object name (_.element).value)]
      ,(autoform-value schema v)))
