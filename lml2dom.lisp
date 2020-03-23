@@ -1,5 +1,6 @@
-,{(var *have-lml-components?* nil)
-  nil}
+,(progn
+   (var *have-lml-components?* nil)
+   nil)
 
 (fn lml2dom-element (x doc)
   (make-extended-element (downcase (string x.)) :doc doc))
