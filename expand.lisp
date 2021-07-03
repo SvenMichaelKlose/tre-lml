@@ -11,7 +11,7 @@
 (define-lml-macro %hook (event-names handler child)
   `(%exec ,#'((parent child)
                (@ (i (ensure-list event-names))
-                 (*event-module*.hook i handler child)))
+                 (child.add-event-listener i handler)))
      ,child))
 
 (var *lml-hook-attrs* (@ [. (make-keyword (upcase (+ "on-" _))) _] *all-events*))
@@ -27,9 +27,10 @@
                    (atom _)
                      _
                    (keyword? _.)  (!? (lml-hook-attr? _.)
-                                      {(enqueue q !)
-                                       (enqueue q ._.)
-                                       (f .._)}
+                                      (progn
+                                        (enqueue q !)
+                                        (enqueue q ._.)
+                                        (f .._))
                                       (. _. (. ._. (f .._))))
                    (cons? _.)     (. (lml-hook _.) (f ._))
                    (. _. (f ._))]
