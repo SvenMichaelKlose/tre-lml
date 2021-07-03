@@ -1,7 +1,6 @@
 ,(= *have-lml-components?* t)
 
 (var *pending-component-updates* nil)
-(var *lml-components* nil)
 
 (fn update-lml-components ()
   (awhile (progn
@@ -67,6 +66,9 @@
   (element.remove))
 
 (finalize-class lml-component)
+
+
+(var *lml-components* nil)
 
 (defmacro declare-lml-component (name)
   (declare type symbol name)
