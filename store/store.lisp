@@ -1,5 +1,5 @@
-(defclass store (init-data)
-  (= data       (| init-data (new))
+(defclass store (&optional (init-data (new)))
+  (= data       init-data
      _children  (new))
   this)
 
