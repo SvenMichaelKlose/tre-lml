@@ -1,9 +1,9 @@
 (var *autoform-widgets* nil)
 
 (defmacro def-autoform-widget (args predicate &body body)
-  `(append! *autoform-widgets*
-            (list {:predicate  ,predicate
-                   :maker      #'(,args ,@body)})))
+  `(= *autoform-widgets* (append *autoform-widgets*
+                                 (list {:predicate  ,predicate
+                                        :maker      #'(,args ,@body)}))))
 
 (defmacro def-editable-autoform-widget (args predicate &body body)
   `(def-autoform-widget ,args [& _.is_editable ,predicate] ,@body))
