@@ -79,4 +79,7 @@
 
 (fn make-lml-component (name props)
   (!? (assoc-value name *lml-components*)
-      ((funcall ! props).init)))
+      (!= (funcall ! props)
+        (? (element? !)
+           !
+           (!.init)))))
