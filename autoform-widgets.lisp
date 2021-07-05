@@ -1,12 +1,17 @@
 (var *autoform-widgets* nil)
 
 (defmacro def-autoform-widget (args predicate &body body)
-  `(= *autoform-widgets* (append *autoform-widgets*
-                                 (list {:predicate  ,predicate
-                                        :maker      #'(,args ,@body)}))))
+  `(append! *autoform-widgets*
+            (list {:predicate  ,predicate
+                   :maker      #'(,args ,@body)})))
 
-(def-autoform-widget (store name schema v) [& _.is_editable
-                                              (eql _.type "selection")]
+(defmacro def-editable-autoform-widget (args predicate &body body)
+  `(def-autoform-widget ,args [& _.is_editable ,predicate] ,@body))
+
+
+; Editables
+
+(def-editable-autoform-widget (store name schema v) [eql _.type "selection"]
   (with (has-default?  (defined? schema.default)
          av            (autoform-value schema v))
     `(select :name       ,name
@@ -36,15 +41,13 @@
           :on-change  ,[store.write (make-object name _.target.value)]
           :value      ,(autoform-value schema v)))
 
-(def-autoform-widget (store name schema v) [& _.is_editable
-                                              (in? _.type "string" "password" "email")]
+(def-editable-autoform-widget (store name schema v) [in? _.type "string" "password" "email"]
   (make-autoform-input-element (? (eql schema.type "string")
                                   "text"
                                   schema.type)
                                store name schema v))
 
-(def-autoform-widget (store name schema v) [& _.is_editable
-                                              (eql _.type "boolean")]
+(def-editable-autoform-widget (store name schema v) [eql _.type "boolean"]
   (let av (? (defined? (slot-value store.data name))
              v
              (!= (autoform-value schema v)
@@ -54,12 +57,14 @@
             :on-click  ,[store.write (make-object name _.target.checked)]
             ,@(& av '(:checked "1")))))
 
-(def-autoform-widget (store name schema v) [& _.is_editable
-                                              (eql _.type "text")]
+(def-editable-autoform-widget (store name schema v) [eql _.type "text"]
   `(textarea :name  ,name
              ,@(autoform-pattern-required schema)
              :on-change  ,[store.write (make-object name _.target.value)]
      ,(autoform-value schema v)))
+
+
+; Non-ditables
 
 (def-autoform-widget (store name schema v) [eql _.type "text"]
   `(pre ,(autoform-value schema v)))
@@ -69,6 +74,7 @@
 
 (def-autoform-widget (store name schema v) [identity t]
   (autoform-value schema v))
+
 
 (fn set-schema-items (value what schema &rest fields)
   (@ (i (| fields (property-names schema)) schema)
