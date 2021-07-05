@@ -6,7 +6,7 @@
                                         :maker      #'(,args ,@body)}))))
 
 (defmacro def-editable-autoform-widget (args predicate &body body)
-  `(def-autoform-widget ,args [& _.is_editable ,predicate] ,@body))
+  `(def-autoform-widget ,args [& _.is_editable (funcall ,predicate _)] ,@body))
 
 
 ; Editables
