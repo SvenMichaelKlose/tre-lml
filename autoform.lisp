@@ -3,7 +3,7 @@
   this)
 
 (defmethod autoform render ()
-  (error "Class AUTOFORM cannot be used alone. Use derived classes like AUTOFORM-PANEL."))
+  (error "Class AUTOFORM cannot be used alone. Use derived classes like AUTOFORM-RECORD or AUTOFORM-LIST."))
 
 (finalize-class autoform)
 (declare-lml-component autoform)
@@ -48,12 +48,12 @@
 (declare-lml-component autoform-list)
 
 
-(fn autoform-panel (props)
+(fn autoform-record (props)
   (let render-label [!? (aref (aref props.schema _) "title")
                         (? (object? !)
                            (aref ! (downcase (symbol-name *language*)))
                            !)]
-    ($$ `(div :class "autoform autoform-panel"
+    ($$ `(div :class "autoform autoform-record"
            ,@(@ [`(label ,@(& (string? _) `(:class ,(field-class-name _)))
                     (span
                       ,(? (string? _)
@@ -63,4 +63,4 @@
                                     :store        ,props.store))]
                 props.fields)))))
 
-(declare-lml-component autoform-panel)
+(declare-lml-component autoform-record)
