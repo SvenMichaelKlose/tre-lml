@@ -1,8 +1,8 @@
 (define-filter dom2lml-children #'dom2lml)
 
+; TODO: Translate keyword back from camel case.
 (fn dom2lml-attributes (x)
-  (mapcan [unless (eql "style" _)
-            `(,(make-keyword (upcase _.)) ,._)]
+  (mapcan [`(,(make-keyword (upcase _.)) ,._)]
           x))
 
 (fn dom2lml-element (x)
